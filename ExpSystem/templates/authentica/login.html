@@ -1,0 +1,57 @@
+{% extends 'base_auth.html' %}{% block content%}
+{% load static %}
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-4">
+        <div class="card d-flex align-items-center justify-content-center mt-5" style="background-color:rgba(2, 45, 88, 0.974);">
+            <div class="card-body">
+                <div class="card-title">
+                    <h4 class="text text-white" >Login</h4>
+                </div>
+
+
+                <form action="{% url 'login' %}" method="post">
+
+                   {% csrf_token %}
+
+                   {% include 'partials/_messages.html' %}
+
+                   <div class="form-group py-2" >
+                        <input
+                           type="text"style="font-size: 70%;"
+                           name="username" 
+                           id="usernameField"
+                           placeholder="Username"
+                           class="form-control"
+
+                           value="{{fieldValues.username}}"
+                        />
+                   </div>
+
+                   <div class="form-group py-2">
+                       <input 
+                           type="password" style="font-size: 70%;"
+                           name="password" 
+                           class="form-control"
+                           placeholder="Password"
+                           id="passwordField"
+                        />
+                        <small class="d-flex align-items-center justify-content-end text-success showPasswordToggle"> SHOW</small>
+                   </div>
+                   
+                   <input type="submit" value="Login" class="btn btn-sm btn-success submit-btn " style="font-size: 70%;"/>   
+                </form>
+                <a class="btn btn-sm btn-info"style="font-size: 70%;" href="{% url 'register' %}">
+                    Register new user
+                </a>
+           </div>
+
+        </div>
+    </div> 
+    <div class="col-md-3"></div>
+</div>
+
+<script src="{% static 'js/register.js' %}"></script>
+
+{% endblock content %}

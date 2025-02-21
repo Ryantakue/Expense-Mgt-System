@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-10">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <h4 style="font-size: 90%;">Analytics</h4>
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <div class="container">
+      <div class="container" style="display: flex; flex-wrap: nowrap;">
+        <div class="col-md-6">
+          <div class="card card-style me-3" style="position: relative;box-shadow: 0 8px 8px 0 #040494c2; height: 100%; background-color: aliceblue; width: 99%">
+            <div class="card-body">
+              <div id="radarChart" style="min-height: 330px;" class="echart"></div>
+              <script>
+                var categoriesex=JSON.parse('{{ categories| safe}}');
+                var amountsex=JSON.parse('{{ cat_amounts| safe}}');
+    
+                document.addEventListener("DOMContentLoaded", () => {
+                  echarts.init(document.querySelector("#radarChart")).setOption({
+                    title:{
+                      text: 'Budget Deviations',
+                      left:'right'
+                    },
+                    tooltip:{},
+                    legend: {
+                      data: ['Allocated Budget','Actual Spending'],
+                      orient:'vertical',
+                      left: 'left'
+                    },
+                    radar: {
+                      name:{
+                        textStyle:{
+                          color: '#fff',
+                          backgroundColor:'#999',
+                          borderRadius:3,
+                          padding:[3,5]
+                        }
+                      },
+                      indicator: categoriesex.map(( category, index)=>
+                      {
+                        return {
+                          name:category,
+                          max: Math.max(amountsex)*0.1
+                        }; 
+                      })
+                    },
+                    series: [{
+                      name: 'Budget vs Actual spending',
+                      type: 'radar',
+                      data: [
+                        {
+                          value: amountsex,
+                          name: 'Actual Spending',
+                          itemStyle:{
+                            color:'crimson'
+                          },
+                          areaStyle:{}
+                        },
+                        { 
+                          value: [10,48,80,30,100,30,20,120,2000,15,25,60],
+                          name: 'Allocated Budget',
+                          areaStyle:{}
+                        
+                        },
+                      ]
+                    }]
+                  });
+                });
+              </script>
+            </div>
+          </div>
+        </div>
+    
+        <div class=" col-md-6"> 
+          <div class="card" style="position: relative;box-shadow: 0 8px 8px 0 rgba(12, 8, 119, 0.655);background-color: aliceblue;width: 98%;">
+            <div class="card-body">
+              <div id="pieChart" style="min-height: 300px; height: 40ch;" class="echart"></div>
+              <script>
+               var categories= JSON.parse('{{ inc_source | safe}}');
+               var amounts=JSON.parse('{{ inc_amounts | safe}}');
+                document.addEventListener("DOMContentLoaded", () => {
+                  echarts.init(document.querySelector("#pieChart")).setOption({
+                    title: {
+                      text: 'Income sources',
+                      left: 'center'
+                    },
+                    tooltip: {
+                      trigger: 'item'
+                    },
+                    legend: {
+                      orient: 'vertical',
+                      left: 'left',
+                      data: categories
+    
+                    },
+                    series: [{
+                      name: 'Income sources',
+                      type: 'pie',
+                      radius: '60%',
+                      position: 'center',
+                      emphasis: {
+                       itemStyle: {
+                         shadowBlur: 10,
+                         shadowOffsetX: 0,
+                         shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                      },
+                      data: amounts.map( function(amount,i){
+                        return{
+                          value: amount,
+                          name: categories[i]
+                        };
+                      }) 
+                    }]
+                  });
+                });
+              </script>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container" style="display: flex;">
+        <div class="card col-md-6 me-2 mt-3" style="min-height: 340px;box-shadow: 0 8px 8px 0 rgba(12, 8, 119, 0.655); background-color: aliceblue;width: 49.5%;">
+          <div class="card-body">
+            <div id="lineChart" style="min-height: 360px;" class="echart"></div>
+          </div>
+          <script type="text/javascript">
+            var dates=JSON.parse('{{ inc_dates | safe}}');
+            var exp_amount=JSON.parse('{{ daily_exp_amount}}');
+            var inc_amount=JSON.parse('{{ daily_inc_amount}}');
+    
+            document.addEventListener("DOMContentLoaded", () => {
+              echarts.init(document.querySelector("#lineChart")).setOption({
+                title:{
+    
+                  text: 'Daily statistics',
+                  left: 'center'
+                },
+                tooltip:{
+                  trigger: 'axis'
+                },
+                legend:{
+                  data:['Expense','Income'],
+                  left: 'left'
+                },
+                grid:{
+                  left: '3%',
+                  right: '4%',
+                  bottom: '8%',
+                  containLabel: true
+    
+                },
+                xAxis: {
+                  type: 'category',
+                  boundaryGap: false,
+                  data: dates
+                },
+                yAxis: {
+                  type: 'value'
+                },
+                series: [
+                  {
+                    name:'Expense',
+                    data: exp_amount,
+                    type: 'line',
+                    smooth: true,
+                    itemStyle:{
+                      color:'crimson'
+                    },
+                  },
+                  {
+                    name:'Income',
+                    data: inc_amount,
+                    type: 'line',
+                    smooth: true,
+                    itemStyle:{
+                      color:'yellowgreen'
+                    }
+                  },
+                ]
+              });
+            });
+          </script>
+          
+        </div> 
+        <div class="card col-md-3 mt-3" style="min-height: 340px;box-shadow: 0 8px 8px 0 rgba(12, 8, 119, 0.655); background-color: aliceblue; width: 49%;">
+          <div id="areaChart" style="min-height: 400px;" class="echart"></div>
+          <script>
+            var week=JSON.parse('{{ week_dates| safe}}');
+            var week_amounts=JSON.parse('{{ week_amounts| safe}}');
+            var inc_week_amount=JSON.parse('{{ week_inc_amounts | safe}}');
+            document.addEventListener("DOMContentLoaded", () => {
+              echarts.init(document.querySelector("#areaChart")).setOption({
+                title:{
+                  text: 'Weekly statistics',
+                  left:'center'
+                },
+                tooltip:{},
+                legend:{
+                  left:'left'
+                },
+                xAxis: {
+                  type: 'category',
+                  boundaryGap: true,
+                  data: week
+                },
+                yAxis: {
+                  type: 'value'
+                },
+                series: [
+                  {
+                    data: week_amounts,
+                    name:'Expense',
+                    type: 'bar',
+                    smooth: true,
+                    itemStyle: {
+                     color:'crimson',
+                    }
+                  },
+                  {
+                    name:'Income',
+                    data: inc_week_amount,
+                    type: 'bar',
+                    smooth: true,
+                    areaStyle:{}
+                  },
+                ]
+              });
+            });
+          </script>
+        </div>  
+      </div>    
+
+    </div>
+  
+   
+</div>
+
+{% endblock content %}
+

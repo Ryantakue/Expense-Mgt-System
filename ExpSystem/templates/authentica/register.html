@@ -1,0 +1,73 @@
+{% extends 'base_auth.html' %}{% block content%}
+{% load static %}
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-4">
+        <div class="card d-flex align-items-center justify-content-center mt-5" style="background-color:rgba(61, 71, 81, 0.974);">
+            <div class="card-body">
+                <div class="card-title">
+                    <h4>Create New User</h4>
+                </div>
+
+
+                <form action="{% url 'register' %}" method="post">
+
+                   {% csrf_token %}
+
+                   {% include 'partials/_messages.html' %}
+
+                   <div class="form-group py-2">
+                        <input
+                           type="text"
+                           name="username" 
+                           id="usernameField"
+                           placeholder="Username"
+                           class="form-control"
+
+                           value="{{fieldValues.username}}"
+                        />
+                   </div>
+                   <div class="invalid_feedback invalid-feedback" style="display:none">
+                       
+                   </div>
+                   <p class="text-sm text-success usernameSuccessOutput"></p>
+
+                   <div class="form-group py-2">
+                       <input 
+                           type="email"
+                           name="email" 
+                           class="form-control"
+                           placeholder="Email"
+                           id="emailField"
+
+                           value="{{fieldValues.email}}"
+                        />
+                   </div>
+                   <div class="emailFeedBackArea invalid-feedback" style="display:none">
+                       
+                   </div>
+                   <p class="text-sm text-success emailFeedBackArea"></p>
+
+                   <div class="form-group py-2">
+                       <input 
+                           type="password"
+                           name="password" 
+                           class="form-control"
+                           placeholder="Password"
+                           id="passwordField"
+                        />
+                        <small class="d-flex align-items-center justify-content-end text-info showPasswordToggle"> SHOW</small>
+                   </div>
+                   
+                   <input type="submit" value="Create " class="btn btn-info btn-sm px-3 submit-btn " /> 
+                </form>
+           </div> 
+        </div>
+    </div> 
+    <div class="col-md-3"></div>
+</div>
+
+<script src="{% static 'js/register.js' %}"></script>
+
+{% endblock content %}
