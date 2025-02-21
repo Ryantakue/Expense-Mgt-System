@@ -1,0 +1,43 @@
+{% extends 'base.html'%} {% block content %}
+
+<div class="container mt-5">
+  <h5 style="font-size: 90%;">Preferred Currency</h5>
+  {% include 'partials/_messages.html' %}
+  <form action="{% url 'preferences' %}" method="post">
+    {% csrf_token %}
+    <div class="input-group " style="font-size: 80%;" >
+      <select name="currency" class="custom-select" id="inputGroupSelect">
+        {% if user_preferences.currency%}
+        <option name="currency" selected value="{{user_preferences.currency}}"
+          >{{user_preferences.currency}}</option
+        >
+        {% endif %} {% for currency in currencies %}
+
+        <option name="currency" value="{{currency.name}} - {{currency.value}}"
+          >{{currency.name}} - {{currency.value}}
+        </option>
+
+        {% endfor %}
+      </select>
+      <div class="input-group-append px-3">
+        <input class="btn  btn-success "style="font-size: 70%;" type="submit" value="Save" />
+      </div>
+    </div>
+  </form>
+</div>
+
+<hr />
+<div class="container ">
+  <h5 style="font-size: 90%;">System Settings</h5>
+</div> 
+<hr>
+<div class="container">
+  <a class="btn btn-sm text-white" style="background-color:rgb(0, 0, 0); font-size: 70%;" href="{% url 'admin:index' %}">
+    Go to Admin
+  </a>
+</div>
+
+
+
+
+{% endblock %}

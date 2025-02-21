@@ -1,0 +1,76 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container mt-4">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{% url 'expenses' %}">Expenses</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Add Expenses</li>
+    </ol>
+  </nav>
+  <div class="container">
+    <div class="col-md-5">
+      <div class="card" style="background-color:rgba(116, 126, 136, 0.974);width: 80%;">
+        <div class="card-body">
+          <div class="card-title">
+              <h4 class="text text-white">Add Expense</h4>
+          </div>
+  
+          <form action="{% url 'add-expenses' %}" method="post">
+          {% include 'partials/_messages.html'%} {% csrf_token %}
+  
+          <div class="form-group text-white" style="font-size: 70%;">
+            <label for="">Amount</label>
+            <input
+              type="text"style="font-size: 70%;"
+              class="form-control form-control mt-1"style="font-size: 80%;"
+              name="amount"
+              value="{{values.amount}}"
+            />
+          </div>
+          <div class="form-group text-white" style="font-size: 70%;">
+            <label for="">Description</label>
+            <input
+              type="text" 
+              class="form-control form-control mt-1"
+              name="description"
+              value="{{values.description}}"style="font-size: 70%;"
+            />
+          </div>
+          <div class="form-group text-white mt-2" style="font-size: 80%;">
+            <label for="">Category</label>
+            <select style="font-size: 80%;" class="form-control mt-2" name="category">
+  
+              {% for category in categories %}
+              <option name="category" value="{{category.name}}"
+                >{{category.name}}</option
+              >
+  
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group text-white mt-3" style="font-size: 70%;">
+            <label for="">Date</label>
+            <input
+              type="date"
+              class="form-control form-control mt-1"style="font-size: 80%;"
+              name="expense_date"
+            />
+          </div>
+  
+          <input
+            type="submit"
+            value="Enter"
+            class="btn btn-success btn-block mt-4"style="font-size: 70%;"
+          />
+          </form>
+      </div>
+      </div>
+
+  </div>
+
+  
+</div>
+
+{% endblock %}

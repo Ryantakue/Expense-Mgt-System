@@ -1,0 +1,18 @@
+{% if messages %}
+<div id='message-container' class="messages">
+    {% for message in messages %}
+    <div{% if message.tags %} class="alert alert-sm alert-{{ message.tags }}" style="--bs-alert-padding-y: 0.5rem; width: 93%; font-size: 70%;" {% endif %}>
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    setTimeout(function() {
+        var messageContainer = document.getElementById('message-container');
+        if (messageContainer) {
+            messageContainer.style.display = 'none';
+        }
+    }, 30000);
+</script>
+{% endif %}

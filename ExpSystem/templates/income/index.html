@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block content %}
+
+<div class="container mt-4">
+  <div class="d-flex flex-wrap align-items-center">
+    <div class="col-md-10">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="">Income</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            My Income
+          </li>
+        </ol>
+      </nav>
+    </div>
+
+    <div class=" col-md-2 col-lg-auto mb-3 mb-lg-0  px-3 justify-content-end">
+      <a href="{% url 'add-income'%}" class="btn btn-sm btn-primary "style="font-size: 70%;">Add Income</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+         <a href="{% url 'income_export_csv' %}" class="btn btn-sm text-white" style="background-color:rgba(2, 45, 88, 0.974);font-size: 70%;">Download CSV </a>
+      </div>
+      <div class="col-md-4">
+
+
+      </div>
+    </div>
+
+<div class="app-table">
+
+  <table class="table table-stripped table-hover">
+    <thead>
+      <tr>
+        <th style="font-size: 90%;">Amount ({{currency}}) </th>
+        <th style="font-size: 90%;">Category</th>
+        <th style="font-size: 90%;">Received From</th>
+        <th style="font-size: 90%;">Date</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% include 'partials/_messages.html'%} {% for income in page_obj%}
+      <tr>
+        <td style="font-size: 70%;">{{income.amount}}</td>
+        <td style="font-size: 70%;">{{income.source}}</td>
+        <td style="font-size: 70%;">{{income.description}}</td>
+        <td style="font-size: 70%;">{{income.date}}</td>
+
+        <td>
+          <a
+            href="{% url 'income-edit' income.id  %}"
+            class="btn btn-info btn-sm" style="font-size: 70%;"
+            >Edit</a
+          >
+          <a
+            href="{% url 'income-delete' income.id %}"
+            class="btn text-white px-2 btn-sm" style="background-color: maroon; font-size: 70%;"
+            >Delete</a
+          >
+        </td>
+      </tr>
+
+      {% endfor %}
+    </tbody>
+  </table> 
+  <ul class="pagination align-right float-right mr-auto">
+    {% if page_obj.has_previous %}
+    <li {% if page_obj.number == 1 %} class="page-item active" {% endif %}><a class="page-link" href="?page=1">&laquo; 1</a></li>
+    <li class="page-item"> <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+    {% endif %}
+
+    {% if page_obj.has_next %}
+    <li class="page-item"> <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+    <li class="page-item"> <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages}} &raquo;</a></li>
+    {% endif %}
+
+  </ul>
+
+
+</div>  
+ 
+</script>
+
+
+
+{% endblock content %}
